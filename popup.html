@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YouTube Notes</title>
+    <style>
+      :root {
+        --bg: #f7f7f3;
+        --panel: #ffffff;
+        --panel-alt: #f0f5f1;
+        --ink: #1d2a24;
+        --muted: #66756d;
+        --line: #d9e3dc;
+        --accent: #2f6f5a;
+        --accent-strong: #234f42;
+        --danger: #b84545;
+        --shadow: rgba(18, 31, 24, 0.08);
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+      }
+
+      body {
+        width: 420px;
+        min-height: 520px;
+      }
+
+      .shell {
+        display: flex;
+        flex-direction: column;
+        min-height: 520px;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 15px;
+        border-bottom: 1px solid var(--line);
+        background: var(--panel);
+        box-shadow: 0 1px 0 var(--shadow);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 1.05rem;
+      }
+
+      .badge {
+        border: 1px solid var(--line);
+        background: var(--panel-alt);
+        color: var(--muted);
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 0.72rem;
+      }
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 14px;
+        flex: 1;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        box-shadow: 0 2px 8px var(--shadow);
+      }
+
+      .video-meta {
+        padding: 12px 14px;
+      }
+
+      .video-label {
+        display: block;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      .video-title {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        word-break: break-word;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      input, textarea, button {
+        font: inherit;
+      }
+
+      input[type="text"],
+      input[type="password"],
+      textarea {
+        width: 100%;
+        padding: 9px 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        color: var(--ink);
+      }
+
+      textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+
+      button {
+        cursor: pointer;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel-alt);
+        color: var(--ink);
+        padding: 8px 12px;
+      }
+
+      .primary {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+      }
+
+      .secondary {
+        background: #edf3ef;
+      }
+
+      .danger {
+        background: #fff0f0;
+        color: var(--danger);
+        border-color: #efc2c2;
+      }
+
+      .row {
+        display: flex;
+        gap: 8px;
+      }
+
+      .row > * {
+        flex: 1;
+      }
+
+      .settings {
+        padding: 12px 14px;
+      }
+
+      .settings label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+
+      .settings input[type="checkbox"] {
+        accent-color: var(--accent);
+      }
+
+      .list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .note {
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+      }
+
+      .note-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+      }
+
+      .note-title {
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+
+      .note-time {
+        font-size: 0.7rem;
+        color: var(--muted);
+      }
+
+      .note-body {
+        margin: 0;
+        white-space: pre-wrap;
+        font-size: 0.8rem;
+        line-height: 1.5;
+        color: var(--ink);
+      }
+
+      .empty {
+        margin: 0;
+        padding: 12px 10px;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .status {
+        min-height: 18px;
+        font-size: 0.76rem;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <h1>YouTube Notes</h1>
+        <span class="badge" id="videoBadge">Video</span>
+      </header>
+
+      <div class="content">
+        <section class="card video-meta">
+          <span class="video-label">Current video</span>
+          <p id="videoTitle" class="video-title">Loading video details…</p>
+        </section>
+
+        <section class="card settings">
+          <label>
+            <input id="autoSummarize" type="checkbox" />
+            Summarize automatically after 30 seconds
+          </label>
+          <input id="apiKey" type="password" placeholder="Anthropic API key" aria-label="Anthropic API key" />
+          <div class="row" style="margin-top:10px;">
+            <button id="saveSettings" class="primary">Save settings</button>
+          </div>
+          <div id="settingsStatus" class="status" aria-live="polite"></div>
+        </section>
+
+        <form id="noteForm">
+          <input id="noteTitle" type="text" placeholder="Note title" aria-label="Note title" />
+          <textarea id="noteBody" placeholder="Write your notes here…" aria-label="Note body"></textarea>
+          <div class="row">
+            <button type="button" id="captureCurrent" class="secondary">Capture current video</button>
+            <button type="submit" class="primary">Save note</button>
+          </div>
+          <div id="noteStatus" class="status" aria-live="polite"></div>
+        </form>
+
+        <section>
+          <div class="row" style="margin-bottom:8px;">
+            <button id="summarizeCurrent" class="secondary" type="button">Summarize</button>
+          </div>
+          <div id="notesList" class="list" aria-live="polite"></div>
+        </section>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

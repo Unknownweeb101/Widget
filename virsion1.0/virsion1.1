@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Notes</title>
+<style>
+:root{
+  --bg:#f3f5f1;--panel:#fbfcfa;--ink:#1d2a24;--muted:#6a776f;--line:#d9e0da;--accent:#2f6f5a;--accent-ink:#fff;--sel:#e4ece6;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#141a17;--panel:#1b221e;--ink:#e6ede8;--muted:#8d9b93;--line:#2a342f;--accent:#6fc2a5;--accent-ink:#0f1a15;--sel:#243029}
+}
+:root[data-theme="dark"]{--bg:#141a17;--panel:#1b221e;--ink:#e6ede8;--muted:#8d9b93;--line:#2a342f;--accent:#6fc2a5;--accent-ink:#0f1a15;--sel:#243029}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 "Source Serif 4",Georgia,serif}
+.app{display:grid;grid-template-columns:300px 1fr;height:100%;max-width:1100px;margin:0 auto}
+aside{border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;background:var(--panel)}
+.top{display:flex;gap:8px;padding:12px}
+input,textarea,button{font:inherit;color:inherit}
+.search{flex:1;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+button{cursor:pointer;border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:8px 12px}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+ul{list-style:none;margin:0;padding:0;overflow-y:auto;flex:1}
+li button{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);border-radius:0;background:none;padding:12px 14px}
+li button[aria-current="true"]{background:var(--sel)}
+.t{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s{color:var(--muted);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.empty{padding:16px 14px;color:var(--muted)}
+main{display:flex;flex-direction:column;min-height:0;min-width:0}
+.bar{display:flex;align-items:center;gap:8px;padding:12px 20px;border-bottom:1px solid var(--line)}
+.bar .meta{flex:1;color:var(--muted);font-size:14px}
+.title{border:0;background:none;font-size:26px;font-weight:600;padding:16px 20px 4px;width:100%}
+textarea{flex:1;border:0;background:none;resize:none;padding:8px 20px 20px;width:100%;line-height:1.65}
+.title:focus,textarea:focus{outline:none}
+.none{margin:auto;color:var(--muted);text-align:center;padding:24px}
+.back{display:none}
+@media (max-width:700px){
+  .app{grid-template-columns:1fr}
+  .app[data-view="edit"] aside{display:none}
+  .app[data-view="list"] main{display:none}
+  .back{display:inline-block}
+  aside{border-right:0}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app" data-view="list">
+  <aside>
+    <div class="top">
+      <input class="search" id="q" type="search" placeholder="Search notes" aria-label="Search notes">
+      <button class="primary" id="new">New note</button>
+    </div>
+    <ul id="list"></ul>
+  </aside>
+  <main id="main"></main>
+</div>
+<script>
+(function(){
+  var KEY="notes-widget-v1", notes=[], cur=null, q="";
+  var $=function(id){return document.getElementById(id)};
+  function load(){try{var r=localStorage.getItem(KEY);notes=r?JSON.parse(r):[]}catch(e){notes=[]}if(!Array.isArray(notes))notes=[]}
+  var saveTimer;
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(notes))}catch(e){}}
+  function esc(s){return s.replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  function fmt(t){return new Date(t).toLocaleString([], {month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"})}
+  function renderList(){
+    var l=$("list"),s=q.toLowerCase();
+    var items=notes.filter(function(n){return !s||(n.title+" "+n.body).toLowerCase().indexOf(s)>-1})
+      .sort(function(a,b){return b.updated-a.updated});
+    if(!items.length){l.innerHTML='<li class="empty">'+(notes.length?"No notes match your search.":"No notes yet. Select New note to write your first one.")+"</li>";return}
+    l.innerHTML=items.map(function(n){
+      return '<li><button data-id="'+n.id+'"'+(n.id===cur?' aria-current="true"':'')+'><div class="t">'+esc(n.title||"Untitled")+'</div><div class="s">'+esc(fmt(n.updated)+" — "+(n.body.split("\n")[0]||"Empty note"))+'</div></button></li>'}).join("");
+  }
+  function renderMain(){
+    var m=$("main"),n=notes.find(function(x){return x.id===cur});
+    if(!n){m.innerHTML='<div class="none">Pick a note from the list, or start a new one.</div>';return}
+    m.innerHTML='<div class="bar"><button class="back" id="back">Back</button><span class="meta" id="meta">Edited '+esc(fmt(n.updated))+'</span><button id="del">Delete</button></div>'+
+      '<input class="title" id="title" placeholder="Title" aria-label="Note title" value="'+esc(n.title)+'">'+
+      '<textarea id="body" placeholder="Start writing" aria-label="Note text">'+esc(n.body)+'</textarea>';
+    function touch(){n.title=$("title").value;n.body=$("body").value;n.updated=Date.now();$("meta").textContent="Saved "+fmt(n.updated);renderList();clearTimeout(saveTimer);saveTimer=setTimeout(save,250)}
+    $("title").oninput=touch;$("body").oninput=touch;
+    $("del").onclick=function(){if(confirm("Delete this note?")){notes=notes.filter(function(x){return x.id!==n.id});cur=null;save();show("list");renderList();renderMain()}};
+    $("back").onclick=function(){show("list")};
+  }
+  function show(v){$("app").setAttribute("data-view",v)}
+  $("new").onclick=function(){
+    var n={id:String(Date.now()),title:"",body:"",updated:Date.now()};
+    notes.push(n);cur=n.id;q="";$("q").value="";save();renderList();renderMain();show("edit");$("title").focus();
+  };
+  $("q").oninput=function(){q=this.value;renderList()};
+  $("list").onclick=function(e){
+    var b=e.target.closest("button[data-id]");if(!b)return;
+    cur=b.getAttribute("data-id");renderList();renderMain();show("edit");
+  };
+  load();
+  if(notes.length)cur=notes.slice().sort(function(a,b){return b.updated-a.updated})[0].id;
+  renderList();renderMain();
+})();
+</script>
+</body>
+</html>

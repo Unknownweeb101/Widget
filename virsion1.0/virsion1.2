@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>YouTube Notes</title>
+<style>
+body{width:380px;margin:0;font:14px/1.5 system-ui,sans-serif;color:#1d2a24;background:#fbfcfa}
+header{padding:12px 14px;font-weight:600;border-bottom:1px solid #d9e0da}
+#list{max-height:380px;overflow-y:auto}
+.note{padding:12px 14px;border-bottom:1px solid #d9e0da}
+.note a{font-weight:600;color:#2f6f5a;text-decoration:none}
+.note pre{white-space:pre-wrap;font:inherit;margin:6px 0}
+.note button,details button{font:inherit;border:1px solid #d9e0da;background:#fff;border-radius:6px;padding:3px 8px;cursor:pointer;margin-right:6px}
+.empty{padding:16px 14px;color:#6a776f}
+details{padding:10px 14px}
+summary{cursor:pointer}
+input[type=password]{width:100%;padding:6px 8px;margin:8px 0;border:1px solid #d9e0da;border-radius:6px;font:inherit}
+label{display:block;margin:6px 0}
+</style></head>
+<body>
+<header>YouTube Notes</header>
+<div id="list"></div>
+<details id="settings">
+  <summary>Settings</summary>
+  <input id="key" type="password" placeholder="Anthropic API key" aria-label="Anthropic API key">
+  <label><input id="auto" type="checkbox"> Summarize automatically after 30 seconds of watching</label>
+  <button id="save">Save settings</button> <span id="ok"></span>
+</details>
+<script src="popup.js"></script>
+</body></html>

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "user-1792585168633-503cec",
+    "email": "demo@example.com",
+    "salt": "3ae0a982dfe79cfe395930d3d20f34be",
+    "passwordHash": "f6989b9c2463b8201333db695ad936413986f9e0fec4e27d300344d3a213066470f37c6af25c3293514e72178a1fae0b2f648f0da85d60d5f9e904e1536b97ca"
+  },
+  {
+    "id": "user-1792587044355-a9ab02",
+    "email": "ashbezuidenhout24@gmail.com",
+    "salt": "0a3bd39edccbd71b6d8d423015885cdb",
+    "passwordHash": "fb95248cca76995264bd9fd5963b2cdc34f9c07cc5cc182f9bcc8fc47fdf039f953cc576b105cc1b7f01054112318f2caa77fca7e220abe4b48e12b68a286034"
+  }
+]

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="forest">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Digital Notes</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <section id="homeView" class="home-view" aria-labelledby="homeHeading">
+      <header class="home-nav">
+        <a class="home-brand" href="/" aria-label="Digital Notes home">
+          <span class="home-brand-mark" aria-hidden="true">D</span>
+          <span>Digital Notes</span>
+        </a>
+        <div class="home-nav-actions">
+          <button id="homeLogin" class="home-login" type="button">Sign in</button>
+          <button id="homeSignup" class="primary" type="button">Create account</button>
+        </div>
+      </header>
+
+      <main class="home-main">
+        <div class="home-copy">
+          <p class="eyebrow">A personal space for good ideas</p>
+          <h1 id="homeHeading">Digital Notes</h1>
+          <p class="home-lead">Keep the useful bits from videos, articles, and everyday thinking in one place you can search later.</p>
+          <div class="home-actions">
+            <button id="homeGetStarted" class="primary home-cta" type="button">Get started</button>
+            <button id="homeExploreLogin" class="home-text-button" type="button">I already have an account</button>
+          </div>
+          <p class="home-assurance">Your notes stay connected to your account.</p>
+        </div>
+
+        <div class="home-showcase">
+          <div class="home-preview" aria-label="Preview of a saved notes library">
+            <div class="preview-header">
+              <span class="preview-brand"><span class="preview-mark">D</span> Your library</span>
+              <span class="preview-count">03 NOTES</span>
+            </div>
+            <div class="preview-search"><span aria-hidden="true">⌕</span> Search your notes</div>
+            <p class="preview-section-label">RECENTLY SAVED</p>
+            <article class="preview-note preview-note-featured">
+              <span class="preview-note-kicker">VIDEO NOTES · 4 MIN AGO</span>
+              <h2>Small habits, lasting change</h2>
+              <p>Start with a version so small it is easy to repeat. Consistency makes the change stick.</p>
+              <span class="preview-link">youtube.com / watch later</span>
+            </article>
+            <article class="preview-note preview-note-compact">
+              <span class="preview-note-kicker">QUICK THOUGHT · YESTERDAY</span>
+              <h2>Ideas for the weekend project</h2>
+            </article>
+          </div>
+        </div>
+      </main>
+
+      <footer class="home-footer">
+        <span>Thoughts worth keeping, easy to find.</span>
+        <span>CAPTURE&nbsp;&nbsp; / &nbsp;&nbsp;ORGANIZE&nbsp;&nbsp; / &nbsp;&nbsp;RETURN</span>
+      </footer>
+    </section>
+
+    <div id="authView" class="auth-shell hidden">
+      <button id="backHome" class="auth-back" type="button">← Home</button>
+      <div class="auth-card">
+        <p class="eyebrow">Welcome</p>
+        <h1>Digital Notes</h1>
+
+        <div class="auth-toggle" role="tablist" aria-label="Authentication mode">
+          <button id="showLogin" class="tab active" type="button">Log in</button>
+          <button id="showRegister" class="tab" type="button">Sign up</button>
+        </div>
+
+        <form id="authForm" class="auth-form">
+          <label>
+            <span>Email</span>
+            <input id="authEmail" type="email" placeholder="you@example.com" required />
+          </label>
+
+          <label>
+            <span>Password</span>
+            <input id="authPassword" type="password" placeholder="••••••••" required />
+          </label>
+
+          <label id="confirmPasswordWrap" class="hidden">
+            <span>Confirm password</span>
+            <input id="confirmPassword" type="password" placeholder="Confirm your password" />
+          </label>
+
+          <button id="authSubmit" class="primary auth-button" type="submit">Log in</button>
+          <p id="authStatus" class="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+
+    <div id="appView" class="app-shell hidden">
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="Digital Notes home">
+          <span class="brand-mark" aria-hidden="true">D</span>
+          <span class="brand-name">Digital Notes<small>Your personal library</small></span>
+        </a>
+
+        <div class="sidebar-group">
+          <p class="sidebar-label">Workspace</p>
+          <div class="nav-item" aria-current="page">
+            <span>All notes</span>
+            <span id="sidebarNoteCount" class="nav-count">0</span>
+          </div>
+        </div>
+
+        <section class="theme-picker" aria-labelledby="themeLabel">
+          <p id="themeLabel" class="sidebar-label">Color theme</p>
+          <div class="theme-swatches" role="group" aria-label="Choose a color theme">
+            <button class="theme-swatch swatch-forest" type="button" data-theme-choice="forest" aria-label="Forest theme" aria-pressed="true" title="Forest"></button>
+            <button class="theme-swatch swatch-ocean" type="button" data-theme-choice="ocean" aria-label="Ocean theme" aria-pressed="false" title="Ocean"></button>
+            <button class="theme-swatch swatch-clay" type="button" data-theme-choice="clay" aria-label="Clay theme" aria-pressed="false" title="Clay"></button>
+            <button class="theme-swatch swatch-berry" type="button" data-theme-choice="berry" aria-label="Berry theme" aria-pressed="false" title="Berry"></button>
+          </div>
+        </section>
+
+        <section class="font-picker" aria-labelledby="fontLabel">
+          <p id="fontLabel" class="sidebar-label">Typography</p>
+          <div class="font-options" role="group" aria-label="Choose a font style">
+            <button class="font-choice" type="button" data-font-choice="sans" aria-label="Sans serif font" aria-pressed="true" title="Sans serif">
+              <span class="font-sample sample-sans" aria-hidden="true">Aa</span><span class="font-name">Sans</span>
+            </button>
+            <button class="font-choice" type="button" data-font-choice="serif" aria-label="Serif font" aria-pressed="false" title="Serif">
+              <span class="font-sample sample-serif" aria-hidden="true">Aa</span><span class="font-name">Serif</span>
+            </button>
+            <button class="font-choice" type="button" data-font-choice="mono" aria-label="Monospace font" aria-pressed="false" title="Monospace">
+              <span class="font-sample sample-mono" aria-hidden="true">Aa</span><span class="font-name">Mono</span>
+            </button>
+          </div>
+        </section>
+
+        <div class="sidebar-account">
+          <span class="account-avatar" aria-hidden="true">N</span>
+          <span id="sidebarEmail" class="account-email">Signed in</span>
+        </div>
+      </aside>
+
+      <div class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Personal library</p>
+            <h1 id="welcomeName">Your notes</h1>
+            <p class="header-subtitle">A quiet place to keep what matters from every video.</p>
+          </div>
+          <div class="topbar-actions">
+            <button id="resetNotes" class="ghost" type="button">Clear all</button>
+            <button id="logoutButton" class="ghost danger-text" type="button">Log out</button>
+          </div>
+        </header>
+
+        <main class="content">
+          <section class="compose-panel" aria-labelledby="composeHeading">
+            <div class="section-heading">
+              <span class="section-index">01</span>
+              <div>
+                <p class="eyebrow">Capture an idea</p>
+                <h2 id="composeHeading">New note</h2>
+              </div>
+            </div>
+            <form id="noteForm">
+              <input id="noteTitle" type="text" placeholder="Give this note a title" aria-label="Note title" />
+              <input id="sourceUrl" type="url" placeholder="Add a video or source link" aria-label="Source URL" />
+              <textarea id="noteBody" rows="6" placeholder="What do you want to remember?" aria-label="Note body"></textarea>
+              <div class="actions">
+                <button type="button" id="captureCurrent" class="secondary">Capture page URL</button>
+                <span class="action-spacer"></span>
+                <button type="button" id="cancelEdit" class="secondary hidden">Cancel</button>
+                <button type="submit" class="primary">Save note</button>
+              </div>
+            </form>
+            <p id="statusMessage" class="status" aria-live="polite"></p>
+          </section>
+
+          <section class="library-section" aria-labelledby="libraryHeading">
+            <div class="library-heading">
+              <div>
+                <p class="eyebrow">Your collection</p>
+                <h2 id="libraryHeading">Saved notes <span id="noteCount" class="heading-count">0</span></h2>
+              </div>
+              <label class="search-wrap">
+                <span class="sr-only">Search notes</span>
+                <input id="noteSearch" type="search" placeholder="Search your notes" aria-label="Search notes" />
+              </label>
+            </div>
+            <div id="notesList" class="notes-list" aria-live="polite"></div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
